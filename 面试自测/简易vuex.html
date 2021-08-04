@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+  </head>
+  <body></body>
+</html>
+<script>
+  class Store {
+    constructor(store) {
+      this.store = store;
+      this.mutations = store.mutations;
+      this.actions = store.actions;
+    }
+    commit(key, ...params) {
+      if (typeof this.mutations[key] === 'function') {
+        console.log('yes');
+        this.mutations[key](this.store, ...params);
+      } else {
+        console.log('no');
+      }
+    }
+    dispatch(key) {
+      if (typeof this.actions[key] === 'function') {
+        console.log('yes');
+        this.actions[key](this);
+      } else {
+        console.log('no');
+      }
+    }
+  }
+  const VueX = {
+    Store,
+  };
+  const x = new VueX.Store({
+    state: { count: 1 },
+    mutations: {
+      setCount(store, count) {
+        store.state.count = count;
+      },
+    },
+    actions: {
+      syncCount(ctx) {
+        ctx.commit('setCount', 3);
+      },
+    },
+  });
+  x.commit('setCount', 2);
+  x.dispatch('syncCount');
+  console.log(x);
+</script>

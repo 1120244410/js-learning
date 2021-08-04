@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+  </head>
+  <body></body>
+</html>
+<script>
+  const soldiers = [];
+  const soldierOption = {
+    type: 'china',
+    walk() {
+      console.log('walk');
+    },
+    run() {
+      console.log('run');
+    },
+    beAttack() {
+      this.health -= 1;
+    },
+    attack() {},
+    die() {},
+  };
+  function Soldier(id) {
+    this.id = id;
+    this.health = 10;
+  }
+  for (const key in soldierOption) {
+    Soldier.prototype[key] = soldierOption[key];
+  }
+  function _new() {
+    const arr = Array.from(arguments);
+    const target = arr.shift();
+    const obj = {}; // 创造一个全新的对象
+    obj.__proto__ = target.prototype; // 执行 [[Prototype]] 连接
+    target.call(obj, ...arr); // 绑定到函数调用的 this
+    return obj; // 返回这个新对象
+  }
+  for (let i = 0; i < 3; i++) {
+    const s = _new(Soldier, i);
+    soldiers.push(s);
+  }
+  soldiers[0].beAttack();
+  console.log(soldiers);
+</script>

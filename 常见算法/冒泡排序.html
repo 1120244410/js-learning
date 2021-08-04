@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+  </head>
+  <body></body>
+</html>
+<script>
+  const arr = [1, 333, 4, 2, 66, 7, 334, 56, 0, 23, 14];
+  function bubblingSort() {
+    const len = arr.length - 1; // 减去一是因为最后一个数没有再去比较的下一个数，所以实际需要比对的数比数组长度要少一个
+    for (let i = 0; i < len; i++) {
+      // i 记录了冒泡操作执行了几次，每次循环完成就会有一个最大数被放置到最后
+      for (let j = 0; j < len - i; j++) {
+        // 减去 i 是因为冒泡i次后，就会有 i 个数被排列完成，i 个数不需要再进入下一次比对，意味着参与冒泡的数字越来越少
+        if (arr[j] > arr[j + 1]) {
+          // 通过不断比对，进行元素交换，将更大的数不断后置
+          var temp = arr[j + 1];
+          arr[j + 1] = arr[j];
+          arr[j] = temp;
+        }
+      }
+    }
+  }
+  bubblingSort();
+  console.log(arr);
+</script>

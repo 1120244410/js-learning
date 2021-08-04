@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+  </head>
+  <body></body>
+</html>
+<script>
+  // 因为递归性能较差
+  // 所以，chrome遍历dom并不是使用递归，具体方法如下
+  function chromeGetElementById(node, id) {
+    while (node) {
+      if (node.id === id) return node; // 当前节点自己的id是否匹配
+      node = nextNodes(node);
+    }
+    return null;
+  }
+  // 用深度遍历
+  // 先找当前结点的子结点，如果它有子结点，则下一个验证的元素就是它的第一个子结点
+  // 否则判断它是否有相邻元素，如果有则返回它的下一个相邻元素。
+  // 如果它既没有子结点，也没有下一个相邻元素，则要往上返回它的父结点的下一个相邻元素
+  // 画一组二叉树会更直观的看出它运行的路径，每一个节点会且仅会访问到一次，属于二叉树的前序遍历
+  function nextNodes(node) {
+    if (node.children.length) {
+      return node.children[0];
+    }
+    if (node.nextElementSibling) {
+      return node.nextElementSibling;
+    }
+    while (node.parentNode) {
+      if (node.parentNode.nextElementSibling) {
+        return node.parentNode.nextElementSibling;
+      }
+      node = node.parentNode;
+    }
+    return null;
+  }
+  const c_node = chromeGetElementById(document, 'my-id');
+  console.log(c_node);
+</script>

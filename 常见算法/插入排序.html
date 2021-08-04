@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+  </head>
+  <body></body>
+</html>
+<script>
+  // 原理
+  // 从第二个数开始，向前面的每一个元素比对，小了就向前移动，直到大于前一个元素
+  const arr = [3, 8, 7, 12, 3, 4, 10];
+  function insertSort() {
+    const len = arr.length;
+    for (let i = 1; i < len; i++) {
+      // i从第二个位置开始，，每对比一次向后移动一位
+      let j = i - 1; // j则取i的前一个数
+      const temp = arr[i]; // 将i的值保存下来
+      while (temp < arr[j]) {
+        // 用i的值与j以及j之前的数不断比较
+        // 如果i的值小于j或者j之前的某个值
+        // 就将i替换j所在的位置，而j就会变为j+1
+        arr[j + 1] = arr[j];
+        arr[j] = temp;
+        j--;
+      }
+    }
+  }
+  insertSort();
+  console.log(arr);
+</script>

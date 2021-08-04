@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+  </head>
+  <body></body>
+</html>
+<script>
+  var arr = [3, 8, 7, 12, 9, 4, 10];
+  var result = quickSort(arr);
+
+  function quickSort(arr) {
+    if (arr.length === 0) {
+      return arr;
+    }
+    const centerPos = Math.floor(arr.length - 1) / 2; // 找到中间数
+    const centerNum = arr.splice(centerPos, 1)[0]; // 将中间数从原数组切出来
+    const left = [];
+    const right = [];
+    for (const item of arr) {
+      if (item > centerNum) {
+        right.push(item);
+      } else {
+        left.push(item);
+      }
+    }
+    return quickSort(left).concat([centerNum], quickSort(right));
+  }
+  console.log(result);
+</script>

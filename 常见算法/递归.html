@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div id="my-id"></div>
+  </body>
+</html>
+
+<script>
+  // 例1 简单实现串行请求
+  const ids = [1, 2, 3];
+
+  (function requestNum() {
+    const id = ids.shift();
+    if (id) {
+      setTimeout(() => {
+        console.log(id);
+        requestNum();
+      }, 1000);
+    } else {
+      console.log('its finally');
+    }
+  })();
+
+  // 例2 遍历dom节点实现 document.getElementById 的功能
+  function getElementById(node, id) {
+    if (!node) return null;
+    if (node.id === id) return node;
+    // 当前节点自己的id是否匹配
+    else {
+      for (const innerNode of node.childNodes) {
+        const res = getElementById(innerNode, id); // 递归判断子节点
+        if (res) return res;
+      }
+    }
+  }
+  const node = getElementById(document, 'my-id');
+  console.log(node);
+</script>
