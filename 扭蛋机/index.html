@@ -105,7 +105,7 @@
     document.querySelector("#img").className = "ani";
     setTimeout(() => {
       document.querySelector("#img").className = "";
-    }, 500);
+    }, 2000);
   }
   init();
 </script>
@@ -133,13 +133,10 @@
       margin: 0;
       opacity: 0;
     }
-    50% {
-      margin-top: 24px;
-      opacity: 1;
-    }
     100% {
-      margin-top: 24px;
-      opacity: 0;
+      margin-top: 32px;
+      opacity: 1;
+      transform: rotateZ(540deg);
     }
   }
 </style>
