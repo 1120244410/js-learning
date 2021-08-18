@@ -8,6 +8,9 @@
   </head>
   <body>
     <canvas id="myCanvas" width="180px" height="200px"></canvas>
+    <div class="outer">
+      <img src="./1.png" id="img" />
+    </div>
     <button onclick="play()">开始</button>
     <button onclick="stop()">停止</button>
   </body>
@@ -67,7 +70,7 @@
   function init() {
     //初始化
     for (let i = 0; i < 15; i++) {
-      // 随机生成20个扭蛋
+      // 随机生成20个蛋
       const ballStyleLength = ballStyle.length;
       let index = Math.floor(ballStyleLength * Math.random()); // ballStyleLength：指有几种扭蛋样式
       const ball = new Ball(ballStyle[index]);
@@ -99,6 +102,10 @@
     for (let i = 0; i < ballList.length; i++) {
       ctx.drawImage(...ballList[i].stop()); //绘制小球
     } //使小球运动
+    document.querySelector("#img").className = "ani";
+    setTimeout(() => {
+      document.querySelector("#img").className = "";
+    }, 500);
   }
   init();
 </script>
@@ -106,5 +113,33 @@
 <style>
   #myCanvas {
     border: 1px solid #333;
+  }
+  .outer {
+    width: 30px;
+    height: 30px;
+    padding: 12px;
+    border: 1px solid #333;
+  }
+  .outer > img {
+    width: 30px;
+    height: 30px;
+    opacity: 0;
+  }
+  .ani {
+    animation: getAward 2s 1 ease;
+  }
+  @keyframes getAward {
+    0% {
+      margin: 0;
+      opacity: 0;
+    }
+    50% {
+      margin-top: 24px;
+      opacity: 1;
+    }
+    100% {
+      margin-top: 24px;
+      opacity: 0;
+    }
   }
 </style>
