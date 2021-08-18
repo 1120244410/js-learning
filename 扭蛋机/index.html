@@ -119,24 +119,19 @@
     height: 30px;
     padding: 12px;
     border: 1px solid #333;
+    overflow: hidden;
   }
   .outer > img {
     width: 30px;
     height: 30px;
-    opacity: 0;
+    transform: translateY(-42px);
   }
   .ani {
-    animation: getAward 2s 1 ease;
+    animation: getAward 1.2s 1 ease;
   }
   @keyframes getAward {
-    0% {
-      margin: 0;
-      opacity: 0;
-    }
     100% {
-      margin-top: 32px;
-      opacity: 1;
-      transform: rotateZ(540deg);
+      transform: translateY(24px) rotateZ(540deg);
     }
   }
 </style>
