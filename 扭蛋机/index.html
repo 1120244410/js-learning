@@ -127,7 +127,9 @@
     transform: translateY(-42px);
   }
   .ani {
-    animation: getAward 1.2s 1 ease;
+    animation: getAward 1s 1 ease;
+    animation-fill-mode: forwards;
+    -webkit-animation-fill-mode: forwards;
   }
   @keyframes getAward {
     100% {
