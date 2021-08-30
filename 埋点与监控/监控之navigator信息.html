@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+  </head>
+  <body>
+    <p>
+      通过navigator获取用户所在设备的浏览器信息，这些信息可以帮助开发人员准确还原问题环境，快速再现问题
+    </p>
+  </body>
+</html>
+<script>
+  const { userAgent, onLine, hardwareConcurrency, geolocation } = navigator;
+  console.log("浏览器的用户代理", userAgent);
+  console.log("联网状态", onLine);
+  console.log("逻辑处理器核心数", hardwareConcurrency);
+  console.log("地理位置", JSON.stringify(geolocation));
+</script>

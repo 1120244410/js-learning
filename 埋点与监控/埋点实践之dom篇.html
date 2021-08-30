@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+  </head>
+  <body>
+    <h1>埋点实践dom操作篇</h1>
+    <h2>分析</h2>
+    <p>
+      我们当前项目的埋点方式是与业务发生交叉的，无论是参数的传输还是方法的调用都带来开发的繁琐性，不同程度的业务也会一定程度影响埋点的复杂性，并且埋点方法发生错误时会阻塞业务代码。
+    </p>
+    <p>现在需要一个能够将业务与埋点解耦，减少代码入侵的方案。</p>
+    <p>
+      一般来说，页面埋点会与页面中某个节点的生命历程产生关系，比如某个弹窗的打开，意味着一个节点的生成，即pv的产生；一次点击，意味着某个节点被捕获，对应着用户事件。
+    </p>
+    <p>
+      那么，我们的埋点就可以从dom节点入手，通过获取节点完成上报，从而将其与js分离开来。
+    </p>
+    <p>但是这样只能完成简单的埋点，那如果需要大量参数怎么办？</p>
+    <p>
+      其实也简单，只需要把我们需要的参数当作attribute绑定在dom上，或者要从父级、祖先获取某些参数，只需向上层节点查找，并设置结束标识来完成查找，最后将拿到的参数聚合即可
+    </p>
+    <hr />
+    <h2>设计</h2>
+    <h3>点击事件</h3>
+    <p>
+      只要在根节点绑定一个事件，就可以拿到我们的目标，及其属性传递的参数
+    </p>
+    <h4>示例</h4>
+    <pre>
+        &lt;div&gt;
+          &lt;div data-bp-value="{key: 'ND'}" &gt;&lt;/div&gt;
+        &lt;/div&gt;
+
+        const bpCollect = function(event) {
+          const target = event.target;
+          const { bpValue } = target.dataset;
+          if (bpValue) {
+            bp(bpValue);
+          }
+        };
+        const bp = function(attr) {
+          console.log("埋点", attr);
+        };
+        document.addEventListener("click", bpCollect);
+    </pre>
+    <p>
+      根节点绑定的事件最好使用document.addEventListener('click',
+      bpCollect)，以免与根节点的click冲突
+    </p>
+    <h3>uv、pv</h3>
+    <p>
+      如果说完全不去入侵业务，那么uv和pv就不可以在create、beforeDestroy的生命周期中完成埋点
+    </p>
+    <p>从dom操作层面讲，对于uv、pv，浏览器有提供api IntersectionObserver</p>
+    <p>
+      注：它是浏览器主动提供的，帮助我们检测目标元素与祖先元素或 viewport
+      的相交变化情况
+    </p>
+    <p>
+      虽然IntersectionObserver是个好工具，但由于其试验性，可能不是一个好的选择
+    </p>
+    <p>所以，对于uv、pv我们要寻找更易操作的方法</p>
+  </body>
+</html>

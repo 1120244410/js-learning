@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+  </head>
+  <body>
+    <h1>收集用户行为</h1>
+    <h2>分类</h2>
+    <ul>
+      <li>UI行为：点击、滚动、聚焦/失焦、长按</li>
+      <li>浏览器行为：请求、前进/后退、跳转、新开页面、关闭</li>
+      <li>控制台行为：log、warn、error</li>
+    </ul>
+    <h2>方法</h2>
+    <h3>劫持原生方法</h3>
+    <p>依旧是通过包裹try/catch的方式，将错误抛给window.onerror</p>
+    <pre>
+        const originAddEventListener = EventTarget.prototype.addEventListener;
+        EventTarget.prototype.addEventListener = function (type, listener, options) {
+            const wrappedListener = function (...args) {
+                try {
+                    return listener.apply(this, args);
+                }
+                catch (err) {
+                    throw err;
+                }
+            }
+            return originAddEventListener.call(this, type, wrappedListener, options);
+        }
+    </pre>
+  </body>
+</html>

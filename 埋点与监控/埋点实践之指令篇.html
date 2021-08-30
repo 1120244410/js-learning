@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+  </head>
+  <body>
+    <h3>自定义指令</h3>
+    <pre>
+        Vue.directive('bpe', {
+            // 适合用来做pv、uv
+            // 绑定指令时 即dom生成
+            bind: function (el, { value }) {
+                // 记一次pv
+                bpFunction(value)
+            },
+            // 解绑指令 即dom移除
+            unbind: function (el, { value }) {
+                // 记一次uv
+                bpFunction(value)
+            },
+            // 以上命令涉及dom创建与移除，需要搭配v-if或其他适合的操作
+        })
+
+        const bpFunction(value){ ... } // 埋点方法
+    </pre>
+  </body>
+</html>

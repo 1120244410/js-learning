@@ -26,13 +26,15 @@
 
   class Ball {
     constructor(img) {
-      this.r = 15; //小球半径
+      this.r = 23; //小球半径
       this.x = this.rand(0, ctx.width - this.r * 2); //小球初始横坐标
-      this.y = ctx.height - this.r * 2;
+      this.y = this.rand(ctx.height - this.r * 2 - 23, ctx.height - this.r * 2);
       this.img = new Image(); //小球素材
       this.img.src = img;
+      this.img.class = "ball";
       this.speedX = this.rand(8, 10);
       this.speedY = this.rand(5, 15);
+      this.isStop = true;
     }
     rand(min, max) {
       //随机数
@@ -58,12 +60,30 @@
         //小球碰到上边界，纵坐标速度变为正
         this.speedY = Math.abs(this.speedY);
       }
-      return [this.img, this.x, this.y, 30, 30];
+      return [this.img, this.x, this.y, this.r * 2, this.r * 2];
     }
     stop() {
-      this.x = this.rand(0, ctx.width - this.r * 2); //小球初始横坐标
-      this.y = ctx.height - this.r * 2;
-      return [this.img, this.x, this.y, 30, 30];
+      if (this.y >= ctx.height - this.r * 2) {
+        //小球碰到下边界
+        this.y = ctx.height - this.r * 2;
+        this.isStop = true;
+      } else {
+        this.x += this.speedX;
+        this.y += this.speedY;
+        if (this.x > ctx.width - this.r * 2) {
+          //小球碰到右边界，横坐标速度变为负
+          this.speedX = -this.speedX;
+        }
+        if (this.x < 0) {
+          //小球碰到左边界，横坐标速度变为正
+          this.speedX = Math.abs(this.speedX);
+        }
+        if (this.y < 0) {
+          //小球碰到上边界，纵坐标速度变为正
+          this.speedY = Math.abs(this.speedY);
+        }
+      }
+      return [this.img, this.x, this.y, this.r * 2, this.r * 2];
     }
   }
 
@@ -80,28 +100,34 @@
           if (b.x < 20) {
             b.x = 0;
           }
-          ctx.drawImage(b.img, b.x, b.y, 30, 30); //绘制小球
+          ctx.drawImage(b.img, b.x, b.y, 46, 46); //绘制小球
         }
       };
     }
   }
 
   function play() {
+    ballList.forEach(el => (el.isStop = false));
     timer = setInterval(function() {
       ctx.clearRect(0, 0, ctx.width, ctx.height); //清空画布
       for (let i = 0; i < ballList.length; i++) {
         ctx.drawImage(...ballList[i].run()); //绘制小球
       } //使小球运动
-    }, 15);
+    }, 30);
   }
 
   function stop() {
     clearInterval(timer);
-    timer = null;
-    ctx.clearRect(0, 0, ctx.width, ctx.height); //清空画布
-    for (let i = 0; i < ballList.length; i++) {
-      ctx.drawImage(...ballList[i].stop()); //绘制小球
-    } //使小球运动
+    timer = setInterval(function() {
+      ctx.clearRect(0, 0, ctx.width, ctx.height); //清空画布
+      for (let i = 0; i < ballList.length; i++) {
+        ctx.drawImage(...ballList[i].stop()); //绘制小球
+        if (ballList.every(el => el.isStop)) {
+          clearInterval(timer);
+          timer = null;
+        }
+      } //使小球运动
+    }, 30);
     document.querySelector("#img").className = "ani";
     setTimeout(() => {
       document.querySelector("#img").className = "";
@@ -113,6 +139,10 @@
 <style>
   #myCanvas {
     border: 1px solid #333;
+  }
+  .ball {
+    width: 60px;
+    height: 60px;
   }
   .outer {
     width: 30px;
