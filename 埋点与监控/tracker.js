@@ -44,22 +44,22 @@ function handlePromiseRejection() {
 
 function handleSourceError() {
   // 当资源加载失败或无法使用时，会在Window对象触发error事件。例如：script 执行时报错。
-  window.addEventListener("error", event =>
-    triggerHandle("Source Error", event)
-  );
+  window.addEventListener("error", event => {
+    if (!event.message) {
+      triggerHandle("Source Error", event);
+    } // 如果有message，那么是其他错误
+    event.preventDefault();
+  });
 }
 
 function handleConsoleCollection() {
   // 一般来说console不太可能出现在生产环境，此方法用来监控非正常状态的console信息
   window.console.error = function(error) {
     const stack = arguments[0] && arguments[0].stack;
-    if (stack) {
-      // 如果报错中包含错误堆栈，可以认为是JS报错，而非自定义报错
-      triggerHandle("Console:Runtime Error", error);
-    } else {
+    if (!stack) {
       triggerHandle("Console:Error", error);
-    }
-    event.preventDefault(); // 这一步我们阻止他的默认行为，比如取消控制台的错误输出
+    } // 如果报错中包含错误堆栈，可以认为是JS报错
+    event.preventDefault();
   };
 }
 
@@ -117,11 +117,12 @@ function handleVueError() {
   }
 }
 
-function handleUICollection() {
-  window.addEventListener("click", e => {
-    console.log(e);
-  });
-}
+// 收集用户行为
+// function handleUICollection() {
+//   window.addEventListener("click", e => {
+//     console.log(e);
+//   });
+// }
 
 (function() {
   handleJSError();
