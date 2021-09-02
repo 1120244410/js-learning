@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div id="app">
+      外层
+      <div v-bp="{key: 'CM'}" class="button">pv</div>
+      <div bp="{key: 'ND'}" class="button">
+        1
+        <div bp="{key: 'CP', evt: 1, chnl: 1}" class="button">
+          2
+        </div>
+        <div bp="{key: 'IV'}" class="button">
+          3
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
+<script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
+<script src="./bp.js"></script>
+<script>
+  const app = new Vue({
+    el: "#app"
+  });
+</script>
+<style>
+  .button {
+    max-width: 400px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    border: 1px solid #333;
+  }
+</style>

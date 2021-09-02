@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+  </head>
+  <body>
+    <img src="" class="bad-img" />
+    <button onclick="pj()">触发promise rejection</button>
+    <button onclick="se()">触发资源错误</button>
+    <button onclick="jsse()">触发js-语法错误</button>
+    <button onclick="jsfetche()">触发js-请求错误</button>
+  </body>
+</html>
+<script src="./tracker.js" defer></script>
+<script>
+  function pj() {
+    new Promise(() => {
+      un;
+    });
+  }
+  function se() {
+    const badImg = document.querySelector(".bad-img");
+    badImg.setAttribute("src", "http://www.");
+  }
+</script>
