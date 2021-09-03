@@ -7,11 +7,11 @@
     <title>Document</title>
   </head>
   <body>
-    <img src="123" class="bad-img" />
-    <button onclick="pj()">触发promise rejection</button>
-    <button onclick="se()">触发资源错误</button>
-    <button onclick="jsse()">触发js-语法错误</button>
-    <button onclick="jsfetche()">触发js-请求错误</button>
+    <button onclick="pj()">promise rejection</button>
+    <button onclick="se()">资源错误</button>
+    <button onclick="jsse()">普通语法错误</button>
+    <button onclick="tce()">try/catch抛错(console.error)</button>
+    <button onclick="ase()">异步抛错 1s</button>
   </body>
 </html>
 <script src="./tracker.js" defer></script>
@@ -22,7 +22,19 @@
     });
   }
   function se() {
-    const badImg = document.querySelector(".bad-img");
-    badImg.setAttribute("src", "http://www.");
+    const img = new Image(1, 1);
+    img.src = "123";
+  }
+  function tce() {
+    try {
+      throw "try/catch抛错";
+    } catch (error) {
+      console.error(error);
+    }
+  }
+  function ase() {
+    setTimeout(() => {
+      throw "异步错误";
+    }, 1000);
   }
 </script>

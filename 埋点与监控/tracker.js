@@ -16,9 +16,9 @@ String.prototype.hashCode = function() {
 // 触发事件
 function triggerHandle(type, info) {
   console.log("捕获异常", type, info);
-  const content = JSON.stringify(info);
-  const hashId = content.hashCode();
-  report({ hashId, content, equipment });
+  // const content = JSON.stringify(info);
+  // const hashId = content.hashCode();
+  // report({ hashId, content, equipment, timestamp: Date.now() });
 }
 // 上报
 function report() {
@@ -30,6 +30,7 @@ function handleJSError() {
   // js同步运行时错误捕获
   window.onerror = function(message, source, lineno, colno, error) {
     triggerHandle("Runtime Error", { message, source, lineno, colno, error });
+    event.preventDefault(); // 这一步我们阻止他的默认行为，比如取消控制台的错误输出
   };
 }
 
@@ -38,26 +39,31 @@ function handlePromiseRejection() {
   // 当Promise 被 reject 且没有 reject 处理器的时候，会触发
   window.addEventListener("unhandledrejection", ({ reason }) => {
     triggerHandle("Promise Error", { reason });
-    event.preventDefault(); // 这一步我们阻止他的默认行为，比如取消控制台的错误输出
+    event.preventDefault();
   });
 }
 
 function handleSourceError() {
   // 当资源加载失败或无法使用时，会在Window对象触发error事件。例如：script 执行时报错。
-  window.addEventListener("error", event => {
-    if (!event.message) {
-      triggerHandle("Source Error", event);
-    } // 如果有message，那么是其他错误
-    event.preventDefault();
-  });
+  window.addEventListener(
+    "error",
+    event => {
+      if (!event.message) {
+        triggerHandle("Source Error", event);
+        event.preventDefault();
+      } // 如果有message，那么是其他错误
+      // 其他错误会被 window.onerror 捕获，为避免重复上报，不对其处理
+    },
+    true
+  );
 }
 
-function handleConsoleCollection() {
+function handleCustom() {
   // 一般来说console不太可能出现在生产环境，此方法用来监控非正常状态的console信息
   window.console.error = function(error) {
     const stack = arguments[0] && arguments[0].stack;
     if (!stack) {
-      triggerHandle("Console:Error", error);
+      triggerHandle("Console Error", error);
     } // 如果报错中包含错误堆栈，可以认为是JS报错
     event.preventDefault();
   };
@@ -118,17 +124,17 @@ function handleVueError() {
 }
 
 // 收集用户行为
-// function handleUICollection() {
-//   window.addEventListener("click", e => {
-//     console.log(e);
-//   });
-// }
+function handleUICollection() {
+  window.addEventListener("click", e => {
+    console.log(e);
+  });
+}
 
 (function() {
   handleJSError();
   handlePromiseRejection();
   handleSourceError();
-  handleConsoleCollection();
+  handleCustom();
   handleUICollection();
   handleVueError();
 })();
