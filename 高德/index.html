@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta
+      name="viewport"
+      content="initial-scale=1.0, user-scalable=no, width=device-width"
+    />
+    <title>鼠标拾取地图坐标</title>
+    <link
+      rel="stylesheet"
+      href="https://a.amap.com/jsapi_demos/static/demo-center/css/demo-center.css"
+    />
+    <script
+      type="text/javascript"
+      src="https://cache.amap.com/lbs/static/addToolbar.js"
+    ></script>
+  </head>
+  <style type="text/css">
+    html,
+    body {
+      width: 100%;
+      height: 100%;
+      margin: 0px;
+    }
+    .map {
+      height: 100%;
+      width: 100%;
+      float: left;
+    }
+  </style>
+  <body>
+    <div id="container" class="map"></div>
+    <div class="input-card">
+      <p>NorthEast坐标：<span id="ne" class="lnglat"></span></p>
+      <p>SouthWest坐标：<span id="sw" class="lnglat"></span></p>
+      <h4>左击获取经纬度：</h4>
+      <div class="input-item">
+        <input type="text" readonly="true" id="lnglat" />
+      </div>
+    </div>
+
+    <script src="https://webapi.amap.com/maps?v=1.4.15&key=您申请的key值&plugin=AMap.Autocomplete"></script>
+    <script type="text/javascript">
+      const map = new AMap.Map("container", {
+        resizeEnable: true, // 是否可缩放地图
+        zoom: 11, // 默认缩放级别
+        showIndoorMap: false,
+        center: [120.599231, 31.292533] // 设置地图中心(苏州)
+      });
+
+      //点击获取经纬度
+      function getPoint() {
+        map.on("click", function(e) {
+          document.getElementById("lnglat").value =
+            e.lnglat.getLng() + "," + e.lnglat.getLat();
+        });
+      }
+      getPoint();
+
+      //限制地图显示范围
+      function lockMapBounds() {
+        var bounds = map.getBounds();
+        map.setLimitBounds(bounds);
+        logMapInfo();
+      }
+      function logMapInfo() {
+        var limitBounds = map.getLimitBounds();
+        if (limitBounds) {
+          document.querySelector(
+            "#ne"
+          ).innerText = limitBounds.northeast.toString();
+          document.querySelector(
+            "#sw"
+          ).innerText = limitBounds.southwest.toString();
+        } else {
+          document.querySelector("#ne").innerText = document.querySelector(
+            "#sw"
+          ).innerText = "未限定";
+        }
+      }
+      lockMapBounds();
+    </script>
+  </body>
+</html>
