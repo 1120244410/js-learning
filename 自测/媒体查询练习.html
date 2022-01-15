@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div class="container"></div>
+  </body>
+</html>
+<style>
+  .container {
+    width: 100%;
+    height: 300px;
+    background: cyan;
+  }
+  @media screen and (max-width: 1200px) {
+    .container {
+      width: 80%;
+      height: 200px;
+    }
+  }
+  @media screen and (max-width: 800px) {
+    .container {
+      width: 60%;
+      height: 100px;
+    }
+  }
+</style>

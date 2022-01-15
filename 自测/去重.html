@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+  </head>
+  <body></body>
+</html>
+<script>
+  Object.assign(Array.prototype, {
+    uniqueByObject() {
+      const obj = {};
+      const newArr = [];
+      for (const item of this) {
+        if (!obj[item]) {
+          obj[item] = true;
+          newArr.push(item);
+        }
+      }
+      return newArr;
+    },
+    uniqueBySet() {
+      const setArr = new Set(this);
+      return Array.from(setArr);
+    },
+    uniqueByFor() {
+      const newArr = [];
+      for (const item of this) {
+        if (newArr.indexOf(item) === -1) {
+          newArr.push(item);
+        }
+      }
+      return newArr;
+    }
+  });
+  const arr = [2, 2, 4, 5, 6, 2, 3, 4, 5];
+  console.time();
+  console.log(arr.uniqueByObject());
+  console.timeEnd();
+  console.time();
+  console.log(arr.uniqueBySet());
+  console.timeEnd();
+  console.time();
+  console.log(arr.uniqueByFor());
+  console.timeEnd();
+</script>
