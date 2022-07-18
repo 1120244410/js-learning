@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+  </head>
+  <body></body>
+</html>
+<script>
+  let arr = [
+    { id: 1, name: "部门1", pid: 0 },
+    { id: 5, name: "部门5", pid: 4 },
+    { id: 2, name: "部门2", pid: 1 },
+    { id: 3, name: "部门3", pid: 1 },
+    { id: 4, name: "部门4", pid: 3 }
+  ];
+  function setTree() {
+    let obj = {};
+    let res = [];
+    for (const el of arr) {
+      const item = { ...el };
+      if (!obj[item.id]) {
+        obj[item.id] = item;
+      }
+      item.children = obj[item.id].children ? obj[item.id].children : [];
+
+      if (item.pid === 0) {
+        res.push(item);
+      } else {
+        if (obj[item.pid]) {
+          obj[item.pid].children.push(item);
+        } else {
+          obj[item.pid] = {
+            children: [item]
+          };
+        }
+      }
+    }
+    console.log(res);
+    return res;
+  }
+</script>
