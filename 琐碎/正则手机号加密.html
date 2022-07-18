@@ -11,14 +11,14 @@
 <script>
   let str = JSON.stringify({
     data: [
-      { user: { phone: '18435204372', ukiId: '18435204372' } },
-      { user: { phone: '18435204364', ukiId: '18435204372' } },
-    ],
+      { user: { phone: "13635204372" } },
+      { user: { phone: "15735334364" } }
+    ]
   });
   let reg = /("phone":"1)\d{10}[\"$]/g;
   let s = str.replace(reg, e => {
     let phone = e.trim();
-    return phone.substring(0, 12) + '****' + phone.substring(16);
+    return phone.substring(0, 12) + "****" + phone.substring(16);
   });
   console.log(JSON.parse(s));
 </script>
