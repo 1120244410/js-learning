@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+  </head>
+  <body>
+    <form action="" onsubmit="handleSubmit">
+      <label for="baseMoney">本金</label>
+      <input id="baseMoney" name="baseMoney" type="number" />
+      <label for="rate">比率%</label>
+      <input id="rate" name="rate" type="number" />
+      <label for="year">存款年限</label>
+      <input id="year" name="year" type="number" />
+      <input type="submit" />
+    </form>
+    <!-- <div>
+      <label for="baseMoney">本金</label>
+      <input id="baseMoney" type="number" />
+    </div>
+    <div>
+      <label for="rate">比率%</label>
+      <input id="rate" type="number" />
+    </div>
+    <div>
+      <label for="year">存款年限</label>
+      <input id="year" type="number" />
+    </div>
+    <div></div> -->
+  </body>
+</html>
+<script>
+  function handleSubmit(e) {
+    console.log(e);
+  }
+  const baseMoney = 500000;
+  let start = 0;
+  let totalProfit = 0;
+  function profit(base, year, rate = 6) {
+    const currentMoney = base + totalProfit;
+    const currentProfit = (currentMoney * rate) / 100;
+    totalProfit = currentProfit + totalProfit;
+    start += 1;
+    if (start < year) {
+      profit(base, year);
+    }
+  }
+  profit(baseMoney, 5, 4);
+  console.log(totalProfit);
+</script>
